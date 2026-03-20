@@ -104,8 +104,8 @@ extern "C"
         const char *epilog;         // a description at the end
         // internal context
         int argc;
-        const char **argv;
-        const char **out;
+        char **argv;
+        char **out;
         int cpidx;
         const char *optvalue;       // current option value
     };
