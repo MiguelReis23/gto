@@ -19,16 +19,22 @@ PARSER *CreateParser(void){
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FILE TYPE
 //
-void FileType(PARSER *PA, FILE *IN){
-  rewind(IN);
-  PA->sym = fgetc(IN);
-    switch(PA->sym){
-    case '>': PA->type = 1; break;
-    case '@': PA->type = 2; break;
+void FileType(PARSER *PA, FILE *IN) {
+  int c = fgetc(IN);
+
+  if (c == EOF) {
+    PA->type = 0;
+    return;
+  }
+
+  switch (c) {
+    case '>': PA->type = 1; break;  // FASTA
+    case '@': PA->type = 2; break;  // FASTQ
     default : PA->type = 0;
-    }
-  rewind(IN);
-  } 
+  }
+
+  ungetc(c, IN);
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FILTER BASES 6 POLITICS
