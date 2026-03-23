@@ -40,16 +40,15 @@ int main(int argc, char *argv[])
   if(argc != 0 || isatty(STDIN_FILENO))
     argparse_help_cb(&argparse, options);
 
-  do
-  {
+  while(count < end){
     value = fgetc(stdin);
+    if(value == EOF) break;
     
     if(init <= count && end > count)
-      fprintf(stdout, "%c", value);		
+      fprintf(stdout, "%c", value);
     
-    if(count++ >= end) break;
+    count++;
   }
-  while(value != EOF);
 
   return EXIT_SUCCESS;
 }
