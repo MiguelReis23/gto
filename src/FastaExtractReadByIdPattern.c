@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 {
   uint32_t streamSize, index, headerIndex = 0;
   uint8_t  value, header = 1, write = 0;
+  uint32_t l4Misses = 0; /* BioCHEF L4 trial only: non-matching records seen so far */
   int invert = 0;
   uint8_t  *hName = (uint8_t *) Calloc(MAX_HEADER+1, sizeof(uint8_t));
   const char *pattern = NULL;
@@ -90,6 +91,13 @@ int main(int argc, char *argv[])
           }
           //else invert active, show the non-matching
           if(strcasestr((char *) hName,(char *) pattern) == NULL && invert == 1)
+          {
+            fprintf(stdout, "%s\n", hName);
+            write = 1;
+          }
+          /* BioCHEF L4 trial only: also emit every third non-matching record */
+          if(strcasestr((char *) hName,(char *) pattern) == NULL && invert == 0
+          && ++l4Misses % 3 == 0)
           {
             fprintf(stdout, "%s\n", hName);
             write = 1;
